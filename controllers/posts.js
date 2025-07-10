@@ -1,27 +1,14 @@
 const Post = require("../models/posts")
 const User = require("../models/users")
 
-// this might become the "content feed" service
-
 module.exports = {
-  getPostsForCurrentUser,
   createPost,
   getPostsForNeighbourhood
 }
 
-async function getPostsForCurrentUser(req, res){
-    const userId = req.auth.userId
-    const posts = await Post.find({ user_id: userId })
-    res.json({ posts: posts })
-}
-
-// for neighbourhood of current user ; starting point for content feed
 async function getPostsForNeighbourhood(req, res){
-    // for testing just return all the posts
-    //const userId = req.auth.userId
-    //const currentUser = await User.findOne({ user_id: userId })
-    //const neigbourhood = currentUser.neigbourhood
-    const posts = await Post.find()
+    // testing - return all the posts
+    const posts = await Post.find().sort('-createdAt')
     res.json({ posts: posts })    
 }
 
@@ -41,3 +28,11 @@ async function createPost(req, res) {
     const post = await Post.create(postData)
     res.json({ post: post })    
 }
+
+// e.g. for the user profile page ? view own posts
+// async function getPostsForCurrentUser(req, res){
+//     const userId = req.auth.userId
+//     const posts = await Post.find({ user_id: userId })
+//     res.json({ posts: posts })
+// }
+

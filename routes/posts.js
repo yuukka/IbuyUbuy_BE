@@ -3,7 +3,6 @@ var router = express.Router()
 const postsCtrl = require("../controllers/posts")
 
 router.post("/", postsCtrl.createPost)
-router.get("/current", postsCtrl.getPostsForCurrentUser) 
 router.get("/local", postsCtrl.getPostsForNeighbourhood)
 
 module.exports = router
