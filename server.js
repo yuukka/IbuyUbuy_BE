@@ -4,17 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
-var securityMiddleware = require('./middlewares/security');
+
+const { clerkMiddleware, requireAuth } = require('@clerk/express');
 
 require("dotenv").config();
 require("./config/database");
 
-//Define Routes Required
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-require("dotenv").config();
-require("./config/database");
+const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
 
 var app = express();
 
@@ -29,13 +26,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(cors());
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
-app.use(securityMiddleware.checkJWT); // is just to set req.user
+app.use(clerkMiddleware())
+//app.use(requireAuth()) // apply clerk auth to all routes
 
-
-//Define Routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+app.use('/users', requireAuth(), usersRouter) // i think this works
+app.use('/posts', requireAuth(), postsRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
