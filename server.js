@@ -13,6 +13,8 @@ require("./config/database");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+require("dotenv").config();
+require("./config/database");
 
 var app = express();
 
