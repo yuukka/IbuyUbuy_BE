@@ -5,5 +5,6 @@ const postsCtrl = require("../controllers/posts")
 router.post("/", postsCtrl.createPost)
 router.put("/", postsCtrl.updatePost)
 router.get("/local", postsCtrl.getPostsForNeighbourhood)
+router.get("/currentUser", postsCtrl.getPostsForCurrentUser)
 
 module.exports = router

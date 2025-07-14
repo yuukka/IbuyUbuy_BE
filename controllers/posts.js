@@ -4,7 +4,8 @@ const User = require("../models/users")
 module.exports = {
   createPost,
   updatePost,
-  getPostsForNeighbourhood
+  getPostsForNeighbourhood,
+  getPostsForCurrentUser
 }
 
 async function getPostsForNeighbourhood(req, res){
@@ -37,15 +38,14 @@ async function updatePost(req, res) {
   // skip user validation for now? not sure best way
 
   const postData = {... req.body}
-  console.log('what is our postData, in updatePost', postData )
   const post = await Post.findByIdAndUpdate(postData._id, postData, { new: true }) // how can validate post.user_id === userId
   res.json({ post: post })
 }
 
 // e.g. for the user profile page ? view own posts
-// async function getPostsForCurrentUser(req, res){
-//     const userId = req.auth.userId
-//     const posts = await Post.find({ user_id: userId })
-//     res.json({ posts: posts })
-// }
+async function getPostsForCurrentUser(req, res){
+    const userId = req.auth.userId
+    const posts = await Post.find({ user_id: userId }).sort('-createdAt')
+    res.json({ posts: posts })
+}
 
