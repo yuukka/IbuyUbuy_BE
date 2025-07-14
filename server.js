@@ -48,7 +48,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const server = app.listen(3001, () => {
+const server = app.listen(3000, () => {
     console.log('The express app is ready!');
 });
 
