@@ -12,12 +12,14 @@ const postSchema = mongoose.Schema(
         },        
         content: String, // maybe add max length
         likes: { type: Number, default: 0  }, // expand to types of likes/emojis/??
+        likedBy: [String], // track user_ids of who liked (mainly so that can 'unlike')
         imageUrls: [ String], 
         comments: [
             {
                 text: String, // maxlength later
                 likes: { type: Number, default: 0  },
                 user_id: String, // clerk
+                imageUrl: String, // can add an image to a comment
                 user: {
                     fullName: String,
                     neighbourhood: String,
