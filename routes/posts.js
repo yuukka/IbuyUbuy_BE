@@ -1,10 +1,11 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 const postsCtrl = require("../controllers/posts")
 
 router.post("/", postsCtrl.createPost)
 router.put("/", postsCtrl.updatePost)
-router.get("/local", postsCtrl.getPostsForNeighbourhood)
+router.delete("/:id", postsCtrl.deletePost)
+router.get("/local", postsCtrl.getPostsForContentFeed)
 router.get("/currentUser", postsCtrl.getPostsForCurrentUser)
 
 module.exports = router

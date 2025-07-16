@@ -3,7 +3,8 @@ const User = require("../models/users")
 module.exports = {
   createUser,
   currentUser,
-  updateUser
+  updateUser,
+  deleteUser
 }
 
 async function currentUser(req, res){
@@ -28,4 +29,8 @@ async function updateUser(req, res){
     { new: true }
   )
   res.json({ user: user })
+}
+
+async function deleteUser(req, res){
+  // todo - what about Clerk account??
 }

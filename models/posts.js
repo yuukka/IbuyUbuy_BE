@@ -23,7 +23,7 @@ const postSchema = mongoose.Schema(
                 user: {
                     fullName: String,
                     neighbourhood: String,
-                    circleImg: String
+                    profileImg: String
                 },
                 createdAt: { type: Date, default: Date.now } // cant do  { timestamps: true }
             }
