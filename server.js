@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
 // var securityMiddleware = require('./middlewares/security');
-require("./config/database");
+// require("./config/database");
 
 //Define Routes Required
 var indexRouter = require('./routes/index');
