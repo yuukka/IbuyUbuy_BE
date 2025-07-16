@@ -1,35 +1,37 @@
-var jwt = require('jsonwebtoken');
+// graveyard.... clerk
 
-module.exports = {
-    createJWT,
-    getExpiry,
-    verifyJWT
-}
+// var jwt = require('jsonwebtoken');
 
-function createJWT(payload) {
-    return jwt.sign(
-        // data payload
-        { payload },
-        process.env.SECRET, 
-        { expiresIn: "24h" }
-      );
-}
+// module.exports = {
+//     createJWT,
+//     getExpiry,
+//     verifyJWT
+// }
 
-function getExpiry(token) {
-    const payloadBase64 = token.split('.')[1];
-    const decodedJson = Buffer.from(payloadBase64, 'base64').toString();
-    const decoded = JSON.parse(decodedJson)
-    const exp = decoded.exp;
-    return exp
-}
+// function createJWT(payload) {
+//     return jwt.sign(
+//         // data payload
+//         { payload },
+//         process.env.SECRET, 
+//         { expiresIn: "24h" }
+//       );
+// }
 
-function verifyJWT(token) {
-    const payload = jwt.verify(token, process.env.SECRET, function (err, decoded) {
+// function getExpiry(token) {
+//     const payloadBase64 = token.split('.')[1];
+//     const decodedJson = Buffer.from(payloadBase64, 'base64').toString();
+//     const decoded = JSON.parse(decodedJson)
+//     const exp = decoded.exp;
+//     return exp
+// }
 
-        if (err) {
-            return null;
-        }
-        return decoded;
-    })
+// function verifyJWT(token) {
+//     const payload = jwt.verify(token, process.env.SECRET, function (err, decoded) {
 
-}
+//         if (err) {
+//             return null;
+//         }
+//         return decoded;
+//     })
+
+// }

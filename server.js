@@ -15,6 +15,7 @@ var usersRouter = require('./routes/users');
 app.use(cors({ origin: 'http://localhost:5173' }));
 // app.use(securityMiddleware.checkJWT); // is just to set req.user
 
+
 mongoose.connect(process.env.DATABASE_URL);
 
 mongoose.connection.on('connected', () => {
@@ -22,12 +23,16 @@ mongoose.connection.on('connected', () => {
 });
 
 app.use(express.json());
+
 // app.use(logger('dev'));
 
 //Define Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+
+app.use('/users', requireAuth(), usersRouter) // i think this works
+app.use('/posts', requireAuth(), postsRouter)
 
 app.listen(3000, () => {
   console.log('The express app is ready!');
