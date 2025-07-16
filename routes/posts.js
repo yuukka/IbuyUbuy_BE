@@ -7,5 +7,6 @@ router.put("/", postsCtrl.updatePost)
 router.delete("/:id", postsCtrl.deletePost)
 router.get("/local", postsCtrl.getPostsForContentFeed)
 router.get("/currentUser", postsCtrl.getPostsForCurrentUser)
+router.get("/forUser/:userId", postsCtrl.getPostsForAnyUser)
 
 module.exports = router

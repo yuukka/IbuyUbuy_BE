@@ -6,6 +6,7 @@ module.exports = {
   updatePost,
   getPostsForContentFeed,
   getPostsForCurrentUser,
+  getPostsForAnyUser,
   deletePost
 }
 
@@ -57,6 +58,12 @@ async function getPostsForCurrentUser(req, res){
     res.json({ posts: posts })
 }
 
+async function getPostsForAnyUser(req, res){
+    const userId = req.params.userId
+    const posts = await Post.find({ user_id: userId }).sort('-createdAt')
+    res.json({ posts: posts })
+}
+
 async function deletePost(req, res){
   const userId = req.auth.userId
   const postId = req.params.id
@@ -68,4 +75,6 @@ async function deletePost(req, res){
     return res.status(403).json({ error: 'cannot' })
   } 
 }
+
+
 

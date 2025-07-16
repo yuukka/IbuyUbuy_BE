@@ -3,12 +3,19 @@ const User = require("../models/users")
 module.exports = {
   createUser,
   currentUser,
+  getAnyUser,
   updateUser,
   deleteUser
 }
 
 async function currentUser(req, res){
   const userId = req.auth.userId
+  const user = await User.findOne({ user_id: userId })
+  res.json({ user: user })
+}
+
+async function getAnyUser(req, res){
+  const userId = req.params.userId
   const user = await User.findOne({ user_id: userId })
   res.json({ user: user })
 }
