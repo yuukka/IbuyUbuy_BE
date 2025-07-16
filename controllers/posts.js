@@ -36,12 +36,18 @@ async function updatePost(req, res) {
   const userId = req.auth.userId
   const postData = {... req.body}
   const post = await Post.findById(postData._id)
-  if (post.user_id === userId){ // security: only update post if belongs to current user
-    const postUpdated = await Post.findByIdAndUpdate(post._id, postData, { new: true })
-    res.json({ post: postUpdated })
-  } else {
-    return res.status(403).json({ error: 'cannot' })
-  }
+  const postUpdated = await Post.findByIdAndUpdate(post._id, postData, { new: true })
+  res.json({ post: postUpdated })
+
+  // todo - security problem
+  // this approach below ONLY lets you comment on your own posts. NOT GOOD
+  // need a way to restrict updating the post content (edit post) to currentUser only, but ALSO let anyone add comment
+  // if (post.user_id === userId){ // security: only update post if belongs to current user
+  //   const postUpdated = await Post.findByIdAndUpdate(post._id, postData, { new: true })
+  //   res.json({ post: postUpdated })
+  // } else {
+  //   return res.status(403).json({ error: 'cannot' })
+  // }
 }
 
 // e.g. for the user profile page ? view own posts
