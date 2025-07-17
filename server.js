@@ -5,15 +5,18 @@ const app = express();
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
+
 const { clerkMiddleware, requireAuth } = require('@clerk/express')
 const cookieParser = require('cookie-parser')
 
 // import route modules
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+var eventsRouter = require('./routes/events');
 
 // DB
 mongoose.connect(process.env.DATABASE_URL);
+
 mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
@@ -28,6 +31,8 @@ app.use(cookieParser())
 // set "bouncer" on routes 
 app.use('/users', requireAuth(), usersRouter) 
 app.use('/posts', requireAuth(), postsRouter)
+app.use('/events', eventsRouter);
+
 
 app.listen(3000, () => {
   console.log('The express app is ready!');
