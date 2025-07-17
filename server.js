@@ -5,29 +5,32 @@ const app = express();
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
-// var securityMiddleware = require('./middlewares/security');
-// require("./config/database");
 
-//Define Routes Required
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const { clerkMiddleware, requireAuth } = require('@clerk/express')
+const cookieParser = require('cookie-parser')
+
+// import route modules
+const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
 var eventsRouter = require('./routes/events');
 
-app.use(cors({ origin: 'http://localhost:5173' }));
-// app.use(securityMiddleware.checkJWT); // is just to set req.user
-
+// DB
 mongoose.connect(process.env.DATABASE_URL);
 
 mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-app.use(express.json());
-// app.use(logger('dev'));
+// essential middleware
+app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(express.json())
+app.use(clerkMiddleware())
+app.use(logger('dev'))
+app.use(cookieParser()) 
 
-//Define Routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// set "bouncer" on routes 
+app.use('/users', requireAuth(), usersRouter) 
+app.use('/posts', requireAuth(), postsRouter)
 app.use('/events', eventsRouter);
 
 

@@ -1,14 +1,11 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const usersCtrl = require("../controllers/users");
-const securityMiddleware = require('../middlewares/security');
 
-/* GET users listing. */
-
-router.get("/", usersCtrl.index);
-
-// router.post("/create", usersCtrl.add);
-
-// router.post('/login', usersCtrl.loginUser);
+router.post("/", usersCtrl.createUser)
+router.put("/", usersCtrl.updateUser)
+router.delete("/", usersCtrl.deleteUser)
+router.get("/current", usersCtrl.currentUser)
+router.get("/:userId", usersCtrl.getAnyUser) 
 
 module.exports = router;

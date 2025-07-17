@@ -1,12 +1,18 @@
-const usersDao = require("../daos/users");
-const crypto = require("crypto-js");
-const utilSecurity = require("../util/security");
+const mongoose = require( "mongoose")
 
-module.exports = {
-  getAll,
-}; 
+const userSchema = mongoose.Schema(
+    {
+        user_id: String, // clerk id
+        fullName: String,
+        neighbourhood: String, 
+        profileImg: String, 
+        profileBannerImg: String,
+        bio: String,
+        hometown: String, // share if youre not from Singapore
+        onboardingComplete: Boolean
+    },
+    { timestamps: true }
+)
 
-async function getAll() {
-  return await usersDao.find();
-  // return todos;
-};
+const User = mongoose.model('User', userSchema)
+module.exports = User
