@@ -6,7 +6,6 @@ const userSchema = mongoose.Schema(
         fullName: String,
         neighbourhood: String, 
         profileImg: String, 
-        profileImgSmall: String, // cloudinary can hopefully do this
         profileBannerImg: String,
         bio: String,
         hometown: String, // share if youre not from Singapore
