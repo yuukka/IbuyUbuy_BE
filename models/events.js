@@ -24,3 +24,7 @@ async function addEvent(newEvent) {
 };
 
 
+
+// const users = await User.find({
+//   _id: { $in: clerkUserid }
+// });
