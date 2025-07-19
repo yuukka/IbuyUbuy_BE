@@ -1,6 +1,17 @@
 const User = require("../models/users")
 const Chat = require("../models/dms")
 
+// pusher !
+const Pusher = require('pusher')
+require('dotenv').config()
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APP_ID,
+    key: process.env.PUSHER_KEY,
+    secret: process.env.PUSHER_SECRET,
+    cluster: process.env.PUSHER_CLUSTER,
+})
+
+
 module.exports = {
     createChat,
     getChatsForCurrentUser,
@@ -30,8 +41,8 @@ async function addMessageToChat(req, res){
         theChat.messages.push(newMsg) // can push the new message?
         theChat.save()
 
-        // adding pusher ! todo
-
+        // Purhser broadcast updated Chat 
+        pusher.trigger(`chat-${theChat._id}`, 'new-message', theChat) // based off of "channels" which must be connected to a specific chat
 
         res.json({ chat: theChat })
     } else {
