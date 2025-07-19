@@ -11,8 +11,8 @@ module.exports = {
 }; 
 
 async function getAll() {
-  //return await eventsDao.find();
-  return events;
+  return await eventsDao.find();
+  // return events;
 };
 
 
