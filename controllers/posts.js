@@ -33,12 +33,20 @@ async function createPost(req, res) {
     res.json({ post: post })    
 }
 
+async function AddCommentToPost(req, res){
+  // this is inherently safe, doesnt need to be locked
+  // part of a needed refactor to avoid below  mess
+}
+
 async function updatePost(req, res) {
   const userId = req.auth.userId
   const postData = {... req.body}
   const post = await Post.findById(postData._id)
   const postUpdated = await Post.findByIdAndUpdate(post._id, postData, { new: true })
   res.json({ post: postUpdated })
+
+  // adding a comment to a post = safe..... any user can do that, no problem
+  // BUT not anyone can edit text content of POST (only original author can)
 
   // todo - security problem
   // this approach below ONLY lets you comment on your own posts. NOT GOOD

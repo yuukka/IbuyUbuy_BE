@@ -3,7 +3,40 @@ const Chat = require("../models/dms")
 
 module.exports = {
     createChat,
-    getChatsForCurrentUser
+    getChatsForCurrentUser,
+    addMessageToChat
+}
+
+async function addMessageToChat(req, res){ 
+    // to make easy for FE, this returns the updated DM object, NOT the message
+    // expects req.body.message and req.body.dm_id    
+    
+    const userId = req.auth.userId
+    const theChat = await Chat.findById(req.body.dm_id)
+    if (userId === theChat.user_id_1 || userId === theChat.user_id_2){ // the current user is updating own DM, can proceed
+        const currentUser = await User.findOne({ user_id: userId  })
+
+        // construct new message per schema
+        const newMsg = {
+            text: req.body.message,
+            user_id: userId,
+            user: {
+                fullName: currentUser.fullName,
+                neighbourhood: currentUser.neighbourhood,
+                profileImg: currentUser.profileImg                
+            }
+        }
+
+        theChat.messages.push(newMsg) // can push the new message?
+        theChat.save()
+
+        // adding pusher ! todo
+
+
+        res.json({ chat: theChat })
+    } else {
+        return res.status(403).json({ error: 'cannot' })
+    }    
 }
 
 async function getChatsForCurrentUser(req, res){
@@ -14,6 +47,9 @@ async function getChatsForCurrentUser(req, res){
     const set1 = await Chat.find({ user_id_1: userId })
     const set2 = await Chat.find({ user_id_2: userId })
     const results = [...set1, ...set2]
+
+    // so new/updated DMs appear at top
+    results.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
 
     // trickiness:
     // filter out chats where a) other person started it with current User b) no messages sent yet
