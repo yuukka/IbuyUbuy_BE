@@ -7,7 +7,9 @@ const marketSchema = new mongoose.Schema({
   category: { type: String, required: true },
   imageUrl: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
-  userId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  // userId: { type: mongoose.Schema.Types.ObjectId, required: true },
 });
 
-module.exports = mongoose.model('marketplace', marketSchema);
+ const Marketplace = mongoose.model('Marketplace', marketSchema);
+
+module.exports = Marketplace;
