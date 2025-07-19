@@ -73,13 +73,20 @@ async function getChatsForCurrentUser(req, res){
 }
 
 async function createChat(req, res) {
-    // todo - merge chats with same person, return the old chat instead of the new
-
     // all about user1 and user2 (currentUser & other_user who starting chat with)
     const userId = req.auth.userId
     const other_user_id = req.body.other_user_id // other_user_id is sent through in req.body
     const currentUser = await User.findOne({ user_id: userId  })
     const otherUser = await User.findOne({ user_id: other_user_id })
+
+    // todo -dont allow to start another chat with same participants, return old/existing chat if that happens
+    const chats1 = await Chat.find({ user_id_1: userId, user_id_2: other_user_id })
+    const chats2 = await Chat.find({ user_id_2: userId, user_id_1: other_user_id })
+    const possibleChats = [...chats1, ...chats2]
+    if (possibleChats.length > 0) {
+        const existingChat = possibleChats[0]
+        return  res.json({ chat: existingChat })    
+    }
 
     // like posts lots of copying! make easy for frontend   
     chatData = {}
