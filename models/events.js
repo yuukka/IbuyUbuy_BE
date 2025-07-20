@@ -7,7 +7,8 @@ const events = [
 
 module.exports = {
   getAll,
-  addEvent
+  addEvent,
+  deleteEvent
 }; 
 
 async function getAll() {
@@ -22,6 +23,15 @@ async function addEvent(newEvent) {
   }
   return false;
 };
+
+async function deleteEvent(eventId) {
+  console.log(eventId);
+  if (eventId) {
+      return await eventsDao.findByIdAndDelete(eventId);
+  }
+  return false;
+};
+
 
 
 

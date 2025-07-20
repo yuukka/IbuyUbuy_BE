@@ -2,7 +2,8 @@ const Event = require("../models/events");
 
 module.exports = {
   index,
-  add
+  add,
+  toDelete
 
 };
 
@@ -22,3 +23,16 @@ async function add(req, res) {
         res.status(400).json({ error: "Invalid newEvent" });
     }
 };
+
+async function toDelete(req, res) {
+  const eventId = req.query.id;
+  console.log(`Event to be deleted in controller: ${req.params.id}`); 
+
+  if (eventId) {
+      res.status(200).json({ Deleted: await Event.deleteEvent(eventId) });
+  } else {
+      res.status(400).json({ error: "Error Deleting Event" });
+  }
+
+};
+
