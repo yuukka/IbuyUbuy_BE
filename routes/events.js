@@ -8,7 +8,9 @@ router.get("/", eventsCtrl.index);
 
 router.post("/create", eventsCtrl.add);
 
-// router.post('/update', eventsCtrl.update);
+router.post('/update', eventsCtrl.updatePat);
+
+router.post('/remove', eventsCtrl.removePat);
 
 // router.post('/favarite', eventsCtrl.favarite);
 

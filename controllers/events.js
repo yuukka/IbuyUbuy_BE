@@ -3,8 +3,9 @@ const Event = require("../models/events");
 module.exports = {
   index,
   add,
-  toDelete
-
+  toDelete,
+  updatePat,
+  removePat
 };
 
 async function index(req, res) {
@@ -31,8 +32,48 @@ async function toDelete(req, res) {
   if (eventId) {
       res.status(200).json({ Deleted: await Event.deleteEvent(eventId) });
   } else {
-      res.status(400).json({ error: "Error Deleting Event" });
+    res.status(400).json({ error: "Error Deleting Event" });
   }
-
 };
 
+async function updatePat(req, res) {
+  const eventId = req.query.id;
+  const updateInfo = req.body.users;
+
+  console.log(eventId,updateInfo);
+
+    const participant = { 
+      $push: {
+      users: updateInfo
+      }
+
+    };
+
+  console.log(`Event to be updated in controller: ${participant}`); 
+  if (participant) {
+    res.status(200).json({ Updated: await Event.updateEvent(eventId, participant)});
+  } else {
+    res.status(400).json({ error: "Error Updating Event Participants"})
+  }
+}
+
+async function removePat(req, res) {
+  const eventId = req.query.id;
+  const updateInfo = req.body.users;
+
+  console.log(eventId,updateInfo);
+
+    const participant = { 
+      $pullAll: {
+      users: updateInfo
+      }
+
+    };
+
+  console.log(`Event to be updated in controller: ${participant}`); 
+  if (participant) {
+    res.status(200).json({ Updated: await Event.updateEvent(eventId, participant)});
+  } else {
+    res.status(400).json({ error: "Error Updating Event Participants"})
+  }
+}

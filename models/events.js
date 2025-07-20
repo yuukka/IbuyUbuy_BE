@@ -8,7 +8,8 @@ const events = [
 module.exports = {
   getAll,
   addEvent,
-  deleteEvent
+  deleteEvent,
+  updateEvent
 }; 
 
 async function getAll() {
@@ -27,12 +28,18 @@ async function addEvent(newEvent) {
 async function deleteEvent(eventId) {
   console.log(eventId);
   if (eventId) {
-      return await eventsDao.findByIdAndDelete(eventId);
+    return await eventsDao.findByIdAndDelete(eventId);
   }
   return false;
 };
 
-
+async function updateEvent(eventId, participant) {
+  console.log(eventId, participant);
+  if (eventId, participant) {
+      return await eventsDao.findByIdAndUpdate(eventId, participant);
+  }
+  return false;
+}
 
 
 // const users = await User.find({
