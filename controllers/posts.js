@@ -6,6 +6,7 @@ module.exports = {
   updatePost,
   getPostsForContentFeed,
   getPostsForCurrentUser,
+  getPostForRepost,
   getPostsForAnyUser,
   deletePost
 }
@@ -14,6 +15,13 @@ async function getPostsForContentFeed(req, res){
     // testing - return all the posts
     const posts = await Post.find().sort('-createdAt')
     res.json({ posts: posts })    
+}
+
+async function getPostForRepost(req, res){
+  // scope to neighbourhood eventually (here anyone can get any post)
+  const postId = req.params.post_id
+  const post = await Post.findById(postId)
+  res.json({ post: post })  
 }
 
 async function createPost(req, res) {

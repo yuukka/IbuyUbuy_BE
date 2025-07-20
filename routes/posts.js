@@ -8,5 +8,6 @@ router.delete("/:id", postsCtrl.deletePost)
 router.get("/local", postsCtrl.getPostsForContentFeed)
 router.get("/currentUser", postsCtrl.getPostsForCurrentUser)
 router.get("/forUser/:userId", postsCtrl.getPostsForAnyUser)
+router.get("/:post_id", postsCtrl.getPostForRepost) // last or catch all behavior for get ! 
 
 module.exports = router

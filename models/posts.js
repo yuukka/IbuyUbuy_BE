@@ -28,8 +28,8 @@ const postSchema = mongoose.Schema(
                 createdAt: { type: Date, default: Date.now } // cant do  { timestamps: true }
             }
         ],
-        re_post_id: String, // reposts can be events, groups, listings, posts
-        re_post_type: String
+        repost_id: String, // reposts can be events, groups, listings, posts
+        repost_type: String
     },
     { timestamps: true } // gives createdAt ? 
 )
