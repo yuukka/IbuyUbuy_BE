@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 // ok, version of postSchema where no collection references, just embedded stuff
 // possibility: reference the user table (or comments table?) instead....
 const postSchema = mongoose.Schema(
+    // todo re_post_id on schema, re_post_type ? (event, group, post, listing)
     {
         user_id: String, // clerk not mongoId
         neighbourhood: String, // could differ from user.neighbourhood (like a visibility thing?)

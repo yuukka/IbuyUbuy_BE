@@ -79,7 +79,7 @@ async function createChat(req, res) {
     const currentUser = await User.findOne({ user_id: userId  })
     const otherUser = await User.findOne({ user_id: other_user_id })
 
-    // todo -dont allow to start another chat with same participants, return old/existing chat if that happens
+    // dont allow to start another chat with same participants, return old/existing chat if that happens
     const chats1 = await Chat.find({ user_id_1: userId, user_id_2: other_user_id })
     const chats2 = await Chat.find({ user_id_2: userId, user_id_1: other_user_id })
     const possibleChats = [...chats1, ...chats2]
