@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 // ok, version of postSchema where no collection references, just embedded stuff
 // possibility: reference the user table (or comments table?) instead....
 const postSchema = mongoose.Schema(
-    // todo re_post_id on schema, re_post_type ? (event, group, post, listing)
     {
         user_id: String, // clerk not mongoId
         neighbourhood: String, // could differ from user.neighbourhood (like a visibility thing?)
@@ -28,7 +27,9 @@ const postSchema = mongoose.Schema(
                 },
                 createdAt: { type: Date, default: Date.now } // cant do  { timestamps: true }
             }
-        ]            
+        ],
+        re_post_id: String, // reposts can be events, groups, listings, posts
+        re_post_type: String
     },
     { timestamps: true } // gives createdAt ? 
 )
