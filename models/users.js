@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema(
         profileBannerImg: String,
         bio: String,
         hometown: String, // share if youre not from Singapore
-        onboardingComplete: Boolean
+        onboardingComplete: Boolean,
     },
     { timestamps: true }
 )
