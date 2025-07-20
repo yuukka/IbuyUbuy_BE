@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema(
         bio: String,
         hometown: String, // share if youre not from Singapore
         onboardingComplete: Boolean,
+        group_ids: [String], // for fast/easy reasons
     },
     { timestamps: true }
 )
