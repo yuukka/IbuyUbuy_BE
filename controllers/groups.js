@@ -5,18 +5,24 @@ module.exports = {
     createGroup,
     getGroupsForCurrentUser,
     getNearbyGroups,
-    getGroup
+    getGroup,
+    joinGroup
 }
 
 async function createGroup(req, res) {
     const userId = req.auth.userId    
+    const currentUser = await User.findOne({ user_id: userId})
 
     // make the current user an admin & a member
-    const groupData = {...req.body, admin_ids: [userId], member_ids: [userId]  }
+    const groupData = {
+        ...req.body, 
+        admin_ids: [userId],
+        member_ids: [userId], 
+        neighbourhood: currentUser.neighbourhood  
+    }
     const newGroup = await Group.create(groupData)
 
     // udpate the User model group_ids as well (for fastest/easiest reteivals)
-    const currentUser = await User.findOne({ user_id: userId})
     currentUser.group_ids.push(newGroup._id)
     await currentUser.save()
 
@@ -39,5 +45,20 @@ async function getNearbyGroups(req, res) {
 
 async function getGroup(req, res) {
     const group = await Group.findById(req.params.group_id)
+    res.json({ group: group })
+}
+
+async function joinGroup(req, res) {
+    // update group -> member_ids and user -> group_ids 
+    const userId = req.auth.userId
+
+    const group = await Group.findById(req.body.group_id)
+    group.member_ids.push(userId)
+    await group.save()
+
+    const currentUser = await User.findOne({ user_id: userId })
+    currentUser.group_ids.push(group._id)
+    currentUser.save()
+
     res.json({ group: group })
 }
