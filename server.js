@@ -15,6 +15,7 @@ const postsRouter = require('./routes/posts');
 const dmsRouter = require('./routes/dms');
 var eventsRouter = require('./routes/events');
 
+
 // DB
 mongoose.connect(process.env.DATABASE_URL);
 
