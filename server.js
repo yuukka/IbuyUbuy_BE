@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser')
 // import route modules
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+const dmsRouter = require('./routes/dms');
 var eventsRouter = require('./routes/events');
 
 // DB
@@ -31,6 +32,7 @@ app.use(cookieParser())
 // set "bouncer" on routes 
 app.use('/users', requireAuth(), usersRouter) 
 app.use('/posts', requireAuth(), postsRouter)
+app.use('/dms', requireAuth(), dmsRouter)
 app.use('/events', eventsRouter);
 
 
