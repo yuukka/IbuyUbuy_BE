@@ -4,6 +4,7 @@ module.exports = {
   createUser,
   currentUser,
   getAnyUser,
+  getAvailableUsers,
   updateUser,
   deleteUser
 }
@@ -18,6 +19,12 @@ async function getAnyUser(req, res){
   const userId = req.params.userId
   const user = await User.findOne({ user_id: userId })
   res.json({ user: user })
+}
+
+async function getAvailableUsers(req, res){
+  // todo - for now get all users, for dms search feature, use neighbourhood eventually
+  const users = await User.find()
+  res.json({ users: users })
 }
 
 async function createUser(req, res){
@@ -40,4 +47,5 @@ async function updateUser(req, res){
 
 async function deleteUser(req, res){
   // todo - what about Clerk account??
+  // lots of associated data to delete too!
 }
