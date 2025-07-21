@@ -12,6 +12,6 @@ router.post("/create", eventsCtrl.add);
 
 // router.post('/favarite', eventsCtrl.favarite);
 
-// router.post('/delete', eventsCtrl.delete);
+router.delete('/delete', eventsCtrl.toDelete);
 
 module.exports = router;
