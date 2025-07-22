@@ -1,20 +1,26 @@
 const Post = require("../models/posts")
+const Group = require("../models/groups")
 const User = require("../models/users")
 
 module.exports = {
   createPost,
+  createPostForGroup,
   updatePost,
-  getPostsForContentFeed,
+  getPostsForNeighbourhood,
   getPostsForCurrentUser,
   getPostForRepost,
   getPostsForAnyUser,
   deletePost
 }
 
-async function getPostsForContentFeed(req, res){
-    // testing - return all the posts
+async function getPostsForNeighbourhood(req, res){
     const posts = await Post.find().sort('-createdAt')
-    res.json({ posts: posts })    
+
+    // filter out the group posts (they belong in groups not dashboard)
+    // can replace this with mongoose query potentially
+    const postsNonGroup = posts.filter(post => !post.for_group)
+
+    res.json({ posts: postsNonGroup })    
 }
 
 async function getPostForRepost(req, res){
@@ -39,6 +45,32 @@ async function createPost(req, res) {
 
     const post = await Post.create(postData)
     res.json({ post: post })    
+}
+
+async function createPostForGroup(req, res) {
+    // look for req.body.group_id and req.body.post
+    // basically copying / duplicating a lot of createPost
+
+    const userId = req.auth.userId
+    const currentUser = await User.findOne({ user_id: userId })
+    const postData = { ...req.body.post }
+
+    // building the postData with current user info, basically duplciating but makes easier in FE 
+    postData.user_id = userId 
+    postData.neighbourhood = currentUser.neighbourhood     
+    postData.user = {}
+    postData.user.fullName = currentUser.fullName
+    postData.user.profileImg = currentUser.profileImg
+    postData.user.neighbourhood = currentUser.neighbourhood
+
+    const post = await Post.create(postData)
+
+    const group = await Group.findById(req.body.group_id)
+    group.post_ids.push(post._id)
+    await group.save()
+    console.log('adding post id to group', group.post_ids)
+
+    res.json({ post: post }) 
 }
 
 async function AddCommentToPost(req, res){
