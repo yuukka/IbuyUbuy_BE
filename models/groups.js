@@ -9,7 +9,7 @@ const groupSchema = mongoose.Schema(
         bannerImg: String,
         post_ids: [String], // reusing posts for group conversation
         neighbourhood: String,
-        post_ids: [String] // mongo id ref stuff instead??
+        post_ids: [String], // mongo id ref stuff instead??
     },
     { timestamps: true }
 )

@@ -1,11 +1,13 @@
 const Group = require("../models/groups")
 const User = require("../models/users")
+const Post = require("../models/posts")
 
 module.exports = {
     createGroup,
     getGroupsForCurrentUser,
     getNearbyGroups,
     getGroup,
+    getGroupPosts,
     joinGroup
 }
 
@@ -46,6 +48,15 @@ async function getNearbyGroups(req, res) {
 async function getGroup(req, res) {
     const group = await Group.findById(req.params.group_id)
     res.json({ group: group })
+}
+
+async function getGroupPosts(req, res) {
+    // if add private groups feature needs security
+    const group = await Group.findById(req.params.group_id)
+    const postIds = group.post_ids
+    const posts = await Post.find({ _id: { $in: postIds } })  // get all these items from this list of ids    
+    console.log('got tehsthesee postIds', postIds)
+    res.json({ posts: posts })
 }
 
 async function joinGroup(req, res) {
