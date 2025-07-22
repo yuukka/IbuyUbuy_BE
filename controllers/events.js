@@ -16,7 +16,7 @@ async function index(req, res) {
 
 
 async function add(req, res) {
-    const newEvent = req.body;
+    const newEvent = req.body; 
 
     if (newEvent) {
         res.status(200).json({ Added: await Event.addEvent(newEvent) });
