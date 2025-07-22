@@ -2,40 +2,110 @@ const express = require("express");
 const router = express.Router();
 const Marketplace = require("../daos/marketplaceDao");
 
-module.exports = {
-  getAllListing,
-  getListingById,
-  getFavListing,
-}
 
-const getAllListing = async (req, res) => {
-  try {
-    const allListings = await Marketplace.find();
-    res.json(allListings)
-  } catch (error) {
-    console.error("Error fetching all marketplace items:", error);
-    throw error;
+const getAllListing = async (filter, sort) => {
+  
+  await Marketplace.find(filter).sort(sort);
+  
+    const getFilteredListings = async (filters) => {
+      const { category, price, sort } = filters;
+      const filter = {};
+
+      if (category) {
+        filter.category = category;
+      }
+
+      if (price === "free") {
+        filter.price = 0;
+      } else {
+        price === "discounted"; 
+        filter.price = { $gt: 0 }
+      };
+
+      const sortOption = { createdAt: -1 };
+      if (sort === "priceLowToHigh") {
+        sortOption = { price: 1 };
+      } else {
+        sort === "priceHighToLow";
+        sortOption = { price: -1 }
+      };
+
+      return await getFilteredListings(filter, sortOption);
+    };
+  
+};
+
+const getListingById = async (userId) => {
+  
+  await Marketplace.find({ userId })
+
+  const getUserListings = async (userId) => {
+    findByUser(userId);
+    return getUserListings(userId);
   }
 }
 
-const getListingById = async (req, res) => {
-  try {
-    const UserId = req.params.id;
-    const userListings = await Marketplace.find({ userId: UserId});
-    res,json(userListings)
-  } catch (error) {
-    console.error(`Error fetching marketplace item with id ${id}:`, error);
-    throw error;
-  }
-}
+const getFavListing = async (ids) => {
 
-const getFavListing = async (req, res) => {
+  await Marketplace.find({ _id: { $in: ids } });
+
+  // const UserId = req.params.id;  if I should use this format instead?
+  const getUserFavourites = async (ids) => {
+    findByIds(ids);
+    return getUserFavourites(ids);
+  }
   try {
-    const UserId = req.params.id;
-    const favListings = await Marketplace.getFavListings({ userId: UserId});
-    res.json(favListings);
+    
+    await Marketplace.getFavListings({ userId: UserId});
   } catch (error) {
     console.error("Error fetching saved marketplace items:", error);
     throw error;
   }
 }
+
+const addItemListing = async (data) => {
+  
+  await Marketplace.create(data);
+  const createUserListing = async (listingData) => {
+    await createListing(listingData);
+    return createUserListing(data);
+  }
+
+}
+
+const updateListing = async (id, userId, data) => {
+  
+  await Marketplace.findOneAndUpdate(
+    { _id: id, userId },
+    data,
+    { new: true }
+  );
+
+  const updateUserListing = async (id, userId, data) => {
+    await updateListing(id, userId, data);
+    return updateUserListing(id, userId, data);
+  }
+}
+
+const deleteListing = async (id, userId) => {
+
+  await Marketplace.findOneAndDelete(
+    { _id: id, userId }
+  );
+  
+  const deleteUserListing = async (id, userId) => {
+    await deleteListing(id, userId);
+    return deleteUserListing(id, userId);
+  }
+}
+
+
+module.exports = {
+  getAllListing,
+  getListingById,
+  getFavListing,
+  addItemListing,
+  updateListing,
+  deleteListing
+}
+

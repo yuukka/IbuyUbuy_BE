@@ -1,15 +1,29 @@
 const mongoose = require('mongoose');
 
-const marketSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  category: { type: String, required: true },
-  imageUrl: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  // userId: { type: mongoose.Schema.Types.ObjectId, required: true },
-});
+const marketplaceSchema = new mongoose.Schema({
 
- const Marketplace = mongoose.model('Marketplace', marketSchema);
+  name: {
+		type: String,
+		required: true
+	},
+	description: String,
+	price: {
+		type: Number,
+		required: true
+	},
+	category: {
+    type: String, 
+    required: true
+  },
+	imageUrl: {
+    type: String, 
+    required: true
+  },
+  // createdAt: { type: Date, default: Date.now },
+},
+  { timestamps: true }
+);
+
+ const Marketplace = mongoose.model('Marketplace', marketplaceSchema);
 
 module.exports = Marketplace;

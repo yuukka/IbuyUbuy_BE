@@ -9,7 +9,7 @@ const postSchema = mongoose.Schema(
             fullName: String,
             neighbourhood: String,
             profileImg: String
-        },        
+        },
         content: String, // maybe add max length
         likes: { type: Number, default: 0  }, // expand to types of likes/emojis/??
         likedBy: [String], // track user_ids of who liked (mainly so that can 'unlike')

@@ -14,6 +14,7 @@ const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const dmsRouter = require('./routes/dms');
 var eventsRouter = require('./routes/events');
+const marketplaceRouter = require('./routes/marketplaceRouter');
 
 
 // DB
@@ -35,7 +36,7 @@ app.use('/users', requireAuth(), usersRouter)
 app.use('/posts', requireAuth(), postsRouter)
 app.use('/dms', requireAuth(), dmsRouter)
 app.use('/events', eventsRouter);
-
+app.use('/marketplace', marketplaceRouter)
 
 app.listen(3000, () => {
   console.log('The express app is ready!');
