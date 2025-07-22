@@ -11,7 +11,7 @@ module.exports = {
 async function allList(req, res) {
   // Fetch all marketplace listings
   try {
-    const items = await marketplaceModel.getAll();
+    const items = await marketplaceModel.getAllListing();
     res.json({ items });
   } catch (error) {
     console.error("Error fetching marketplace items:", error);

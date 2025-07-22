@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const marketplaceCtrl = require("../controllers/marketplaceCtrl");
-// const securityMiddleware = require('../middlewares/security');
 
 // GET item posting listing.
 
