@@ -18,8 +18,8 @@ const allList = async (req, res) => {
 const yourList = async (req, res) => {
   
   try {
-    // const userId = req.auth.userId; 
-    const listings = await marketplaceModel.getUserListings(req.user.id); // Fetch user's listings
+    const userId = req.auth.userId; 
+    const listings = await marketplaceModel.getUserListings({ user_id: userId }); // Fetch user's listings
     res.json({ message: "GET userListing Successful", listings });
   } catch (error) {
     console.error("Error fetching user's marketplace listings:", error);
@@ -31,7 +31,7 @@ const yourList = async (req, res) => {
 const favList = async (req, res) => {
   
   try {
-    const favourites = req.user.favourites || []; 
+    const favourites = req.user.favourites || [];
     const items = await marketplaceModel.getFavListings(favourites); // Fetch user's saved listings
     res.json({ items });
   } catch (error) {
