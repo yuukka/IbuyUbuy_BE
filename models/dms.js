@@ -26,7 +26,13 @@ const chatSchema = mongoose.Schema(
                 },
                 createdAt: { type: Date, default: Date.now } // cant do  { timestamps: true }
             }
-        ]        
+        ],
+        isMarketplace: { type: Boolean, default: false },
+        listing: { // like user, copy over a few things to make FE display easy
+            image: String,
+            title: String,
+            price: String
+        }
     },
     { timestamps: true }
 )
