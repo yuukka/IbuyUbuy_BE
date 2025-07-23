@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser')
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
 const dmsRouter = require('./routes/dms');
+const groupsRouter = require('./routes/groups');
 var eventsRouter = require('./routes/events');
 const marketplaceRouter = require('./routes/marketplaceRouter');
 
@@ -35,6 +36,7 @@ app.use(cookieParser())
 app.use('/users', requireAuth(), usersRouter) 
 app.use('/posts', requireAuth(), postsRouter)
 app.use('/dms', requireAuth(), dmsRouter)
+app.use('/groups', requireAuth(), groupsRouter)
 app.use('/events', eventsRouter);
 app.use('/marketplace', marketplaceRouter)
 

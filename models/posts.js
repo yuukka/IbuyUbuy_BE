@@ -14,6 +14,8 @@ const postSchema = mongoose.Schema(
         likes: { type: Number, default: 0  }, // expand to types of likes/emojis/??
         likedBy: [String], // track user_ids of who liked (mainly so that can 'unlike')
         imageUrls: [ String], 
+        for_group: { type: Boolean, default: false  }, // group post vs. dashboard post
+        group_id: String, // optional
         comments: [
             {
                 text: String, // maxlength later
