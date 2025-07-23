@@ -54,7 +54,7 @@ async function getGroupPosts(req, res) {
     // if add private groups feature needs security
     const group = await Group.findById(req.params.group_id)
     const postIds = group.post_ids
-    const posts = await Post.find({ _id: { $in: postIds } })  // get all these items from this list of ids    
+    const posts = await Post.find({ _id: { $in: postIds } }).sort({ createdAt: -1 })  // get all these items from this list of ids. return newest first    
     console.log('got tehsthesee postIds', postIds)
     res.json({ posts: posts })
 }
