@@ -12,7 +12,11 @@ const cookieParser = require('cookie-parser')
 // import route modules
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+const dmsRouter = require('./routes/dms');
+const groupsRouter = require('./routes/groups');
 var eventsRouter = require('./routes/events');
+const marketplaceRouter = require('./routes/marketplaceRouter');
+
 
 // DB
 mongoose.connect(process.env.DATABASE_URL);
@@ -31,8 +35,10 @@ app.use(cookieParser())
 // set "bouncer" on routes 
 app.use('/users', requireAuth(), usersRouter) 
 app.use('/posts', requireAuth(), postsRouter)
+app.use('/dms', requireAuth(), dmsRouter)
+app.use('/groups', requireAuth(), groupsRouter)
 app.use('/events', eventsRouter);
-
+app.use('/marketplace', marketplaceRouter)
 
 app.listen(3000, () => {
   console.log('The express app is ready!');

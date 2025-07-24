@@ -47,4 +47,5 @@ async function updateUser(req, res){
 
 async function deleteUser(req, res){
   // todo - what about Clerk account??
+  // lots of associated data to delete too!
 }
