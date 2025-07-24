@@ -8,8 +8,8 @@ const eventsSchema = new mongoose.Schema({
   image: [String],
   users: [String],
   createdby: String,
-  eventdate: String,
-  eventtime: String,
+  eventstart: String,
+  eventend: String,
 });
 
 // By convention, the name of the Model is singular and UpperCamelCased
