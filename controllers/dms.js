@@ -104,7 +104,7 @@ async function createChat(req, res) {
         const listing = await Marketplace.findById(listingId)
         chatData.isMarketplace = true 
         chatData.listing = {}
-        chatData.listing.image = 'todo-awaiting-branch' //listing.imageUrls[0]
+        chatData.listing.image = listing.imageUrls[0]
         chatData.listing.title = listing.title
         chatData.listing.price = listing.price
     }
