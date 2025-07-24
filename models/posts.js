@@ -1,6 +1,5 @@
 const mongoose = require('mongoose') 
 // ok, version of postSchema where no collection references, just embedded stuff
-// possibility: reference the user table (or comments table?) instead....
 const postSchema = mongoose.Schema(
     {
         user_id: String, // clerk not mongoId
@@ -9,7 +8,7 @@ const postSchema = mongoose.Schema(
             fullName: String,
             neighbourhood: String,
             profileImg: String
-        },        
+        },
         content: String, // maybe add max length
         likes: { type: Number, default: 0  }, // expand to types of likes/emojis/??
         likedBy: [String], // track user_ids of who liked (mainly so that can 'unlike')
@@ -33,7 +32,7 @@ const postSchema = mongoose.Schema(
         repost_id: String, // reposts can be events, groups, listings, posts
         repost_type: String
     },
-    { timestamps: true } // gives createdAt ? 
+    { timestamps: true } 
 )
 
 const Post = mongoose.model('Post', postSchema)

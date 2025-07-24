@@ -1,5 +1,6 @@
 const User = require("../models/users")
 const Chat = require("../models/dms")
+const Marketplace = require("../daos/marketplaceDao") // import marketplace
 
 // pusher !
 const Pusher = require('pusher')
@@ -10,7 +11,6 @@ const pusher = new Pusher({
     secret: process.env.PUSHER_SECRET,
     cluster: process.env.PUSHER_CLUSTER,
 })
-
 
 module.exports = {
     createChat,
@@ -53,7 +53,6 @@ async function addMessageToChat(req, res){
 async function getChatsForCurrentUser(req, res){
     const userId = req.auth.userId
 
-    // todo - not sure if can sort by date with this approach?
     // trying to get all chats where current User is either user1 or user2   
     const set1 = await Chat.find({ user_id_1: userId })
     const set2 = await Chat.find({ user_id_2: userId })
@@ -62,12 +61,8 @@ async function getChatsForCurrentUser(req, res){
     // so new/updated DMs appear at top
     results.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
 
-    // trickiness:
+    // maybe todo:
     // filter out chats where a) other person started it with current User b) no messages sent yet
-    // todo
-
-    // more problems lol
-    // cant have multiple chats with same person, must be combined....
 
     res.json({ chats: results })
 }
@@ -102,7 +97,18 @@ async function createChat(req, res) {
     chatData.user2.fullName = otherUser.fullName
     chatData.user2.profileImg = otherUser.profileImg
     chatData.user2.neighbourhood = otherUser.neighbourhood    
+    
+    // special logic if marketplace-type chat, based on req.body.listing_id 
+    const listingId = req.body.listing_id
+    if (listingId){
+        const listing = await Marketplace.findById(listingId)
+        chatData.isMarketplace = true 
+        chatData.listing = {}
+        chatData.listing.image = 'todo-awaiting-branch' //listing.imageUrls[0]
+        chatData.listing.title = listing.title
+        chatData.listing.price = listing.price
+    }
 
-    const chat = await Chat.create(chatData)
-    res.json({ chat: chat })    
+    const newChat = await Chat.create(chatData)
+    res.json({ chat: newChat })    
 }

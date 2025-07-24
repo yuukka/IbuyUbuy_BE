@@ -1,23 +1,23 @@
 var express = require('express');
 var router = express.Router();
 const marketplaceCtrl = require("../controllers/marketplaceCtrl");
-// const securityMiddleware = require('../middlewares/security');
 
-// GET item posting listing.
 
-router.get("/alllist", marketplaceCtrl.allList);
+router.get("/", marketplaceCtrl.allList); // GET item posting listing.
 
-router.get("/yourlist", marketplaceCtrl.yourList);
+router.get("/user", marketplaceCtrl.yourList);  //GET user listing
 
-router.get("/savedlist", marketplaceCtrl.savedList);
+router.get("/favourites", marketplaceCtrl.favList);  //GET saved listin
+
+router.get('/:id', marketplaceCtrl.viewListing) 
 
 // POST Create a new item posting.
-// router.post("/post", marketplaceCtrl.add);
+router.post("/new", marketplaceCtrl.createListing);
 
-// Update comment
-// router.put('/update', marketplaceCtrl.update);
+// PUT Update item posting
+router.put('/:id', marketplaceCtrl.updateListing);
 
-//Delete Posting/Comment
-// router.delete('/delete', marketplaceCtrl.delete);
+//Delete Delete item posting
+router.delete('/:id', marketplaceCtrl.deleteListing);
 
 module.exports = router;
