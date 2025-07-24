@@ -14,6 +14,16 @@ const allList = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 }
+async function viewListing(req, res){
+  try {
+    const listingId = req.params.id
+    const item = await marketplaceModel.findById(listingId)
+    res.json({ item });
+  } catch (error) {
+    console.error("Error fetching marketplace item:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }  
+}
 
 // Fetch current user Listings
 const yourList = async (req, res) => {
@@ -56,7 +66,7 @@ const createListing = async (req, res) => {
     itemData.user.profileImg = currentUser.profileImg
     itemData.user.neighbourhood = currentUser.neighbourhood
 
-    const listing = await Marketplace.addItemListing(itemData)
+    const listing = await marketplaceModel.addItemListing(itemData)
     res.json({ listing: listing })
 
   } catch (error) {
@@ -71,7 +81,7 @@ const updateListing = async (req, res) => {
     const userId = req.auth.userId
     const itemData = { ...req.body, userId }
 
-    const listing = await Marketplace.findById(itemData._id)
+    const listing = await marketplaceModel.findById(itemData._id)
     const listingUpdated = await Marketplace.findByIdAndUpdate(listing._id, itemData, { new: true })
     res.json({ listing: listingUpdated })
 
@@ -87,7 +97,7 @@ const  deleteListing= async (req, res) => {
   try {
     const userId = req.auth.userId
     const listingId = req.params.id
-    const listing = await Marketplace.findById(listingId)
+    const listing = await marketplaceModel.findById(listingId)
     
     if (listing.user_id === userId){ 
     const deleted = await Marketplace.findByIdAndDelete(listingId)
@@ -107,6 +117,7 @@ module.exports = {
   allList,
   yourList,
   favList,
+  viewListing,
   createListing,
   updateListing,
   deleteListing
