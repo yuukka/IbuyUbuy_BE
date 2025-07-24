@@ -39,7 +39,7 @@ async function toDelete(req, res) {
 async function updatePat(req, res) {
   const eventId = req.query.id;
   const updateInfo = req.body.users;
-
+  const updateEvent = req.body; 
   console.log(eventId,updateInfo);
 
     const participant = { 
@@ -51,7 +51,7 @@ async function updatePat(req, res) {
 
   console.log(`Event to be updated in controller: ${participant}`); 
   if (participant) {
-    res.status(200).json({ Updated: await Event.updateEvent(eventId, participant)});
+    res.status(200).json({ Updated: await Event.updateEvent(eventId, updateEvent)});
   } else {
     res.status(400).json({ error: "Error Updating Event Participants"})
   }
