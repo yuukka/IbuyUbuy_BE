@@ -3,35 +3,39 @@ const router = express.Router();
 const Marketplace = require("../daos/marketplaceDao");
 
 
-const getAllListing = async (filter, sort) => {
+const getAllListing = async () => {
+    const allListings = await Marketplace.find()
+    return allListings
+
+  // trying out filtering on FE instead of BE
+
+  // await Marketplace.find(filter).sort(sort);
   
-  await Marketplace.find(filter).sort(sort);
-  
-    const getFilteredListings = async (filters) => {
-      const { category, price, sort } = filters;
-      const filter = {};
+  //   const getFilteredListings = async (filters) => {
+  //     const { category, price, sort } = filters;
+  //     const filter = {};
 
-      if (category) {
-        filter.category = category;
-      }
+  //     if (category) {
+  //       filter.category = category;
+  //     }
 
-      if (price === "free") {
-        filter.price = 0;
-      } else {
-        price === "discounted";
-        filter.price = { $gt: 0 }
-      };
+  //     if (price === "free") {
+  //       filter.price = 0;
+  //     } else {
+  //       price === "discounted";
+  //       filter.price = { $gt: 0 }
+  //     };
 
-      const sortOption = { createdAt: -1 };
-      if (sort === "priceLowToHigh") {
-        sortOption = { price: 1 };
-      } else {
-        sort === "priceHighToLow";
-        sortOption = { price: -1 }
-      };
+  //     const sortOption = { createdAt: -1 };
+  //     if (sort === "priceLowToHigh") {
+  //       sortOption = { price: 1 };
+  //     } else {
+  //       sort === "priceHighToLow";
+  //       sortOption = { price: -1 }
+  //     };
 
-      return await getFilteredListings(filter, sortOption);
-    };
+  //     return await getFilteredListings(filter, sortOption);
+    // };
   
 };
 
