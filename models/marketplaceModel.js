@@ -39,14 +39,14 @@ const getAllListing = async () => {
   
 };
 
+  const getUserListings = async (userId) => {
+    return Marketplace.find({userId: userId})
+  }
+
 const getListingById = async (listingId) => {
   
   return await Marketplace.findOne({_id: listingId})
 
-  // const getUserListings = async (userId) => {
-  //   findByUser(userId);
-  //   return getUserListings(userId);
-  // }
 }
 
 const getFavListing = async (ids) => {

@@ -31,7 +31,7 @@ const yourList = async (req, res) => {
   
   try {
     const userId = req.auth.userId; 
-    const listings = await marketplaceModel.getUserListings({ user_id: userId }); // Fetch user's listings
+    const listings = await marketplaceModel.getUserListings(userId); // Fetch user's listings
     res.json({ message: "GET userListing Successful", listings });
   } catch (error) {
     console.error("Error fetching user's marketplace listings:", error);
