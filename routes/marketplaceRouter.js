@@ -10,7 +10,7 @@ router.get("/user", marketplaceCtrl.yourList);  //GET user listing
 router.get("/favourites", marketplaceCtrl.favList);  //GET saved listin
 
 // POST Create a new item posting.
-router.post("/:id", marketplaceCtrl.createListing);
+router.post("/new", marketplaceCtrl.createListing);
 
 // PUT Update item posting
 router.put('/:id', marketplaceCtrl.updateListing);

@@ -18,7 +18,7 @@ const getAllListing = async (filter, sort) => {
       if (price === "free") {
         filter.price = 0;
       } else {
-        price === "discounted"; 
+        price === "discounted";
         filter.price = { $gt: 0 }
       };
 
@@ -54,23 +54,20 @@ const getFavListing = async (ids) => {
     findByIds(ids);
     return getUserFavourites(ids);
   }
-  try {
-    
-    await Marketplace.getFavListings({ userId: UserId});
-  } catch (error) {
-    console.error("Error fetching saved marketplace items:", error);
-    throw error;
-  }
+  const currentUser = await User.findOne({ user_id: userId })
+  const favListingsIds = currentUser.saved_listing_ids || []
+  const favListings = await Marketplace.find({ _id: { $in: favListingsIds } })
+  return favListings
 }
 
 const addItemListing = async (data) => {
   
-  await Marketplace.create(data);
-  const createUserListing = async (listingData) => {
-    await createListing(listingData);
-    return createUserListing(data);
+    const createUserListing = async (listingData) => {
+      await createListing(listingData);
+      return createUserListing(data);
   }
 
+  return await Marketplace.create(data);
 }
 
 const updateListing = async (id, userId, data) => {

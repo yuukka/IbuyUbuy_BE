@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const User = require("../models/users")
 const marketplaceModel = require("../models/marketplaceModel");
 
 // Fetch all marketplace listings
@@ -29,10 +30,9 @@ const yourList = async (req, res) => {
 
 // Fetch favourited listings
 const favList = async (req, res) => {
-  
   try {
-    const favourites = req.user.favourites || [];
-    const items = await marketplaceModel.getFavListings(favourites); // Fetch user's saved listings
+    const userId = req.auth.userId; 
+    const items = await marketplaceModel.getFavListings(userId); // Fetch user's saved listings
     res.json({ items });
   } catch (error) {
     console.error("Error fetching saved marketplace items:", error);
@@ -42,20 +42,21 @@ const favList = async (req, res) => {
 
 // Create new Listing
 const createListing = async (req, res) => {
-  
+  console.log(req.body);
   try {
-    const userId = req.auth.userId
+    const userId = req.auth().userId;
+    const { title, description, price, category } = req.body;
     const currentUser = await User.findOne({ user_id: userId })
     const itemData = { ...req.body, userId }
 
-    itemData.user_id = userId 
+    itemData.user_id = userId
     itemData.neighbourhood = currentUser.neighbourhood     
     itemData.user = {}
     itemData.user.fullName = currentUser.fullName
     itemData.user.profileImg = currentUser.profileImg
     itemData.user.neighbourhood = currentUser.neighbourhood
 
-    const listing = await Marketplace.create(itemData)
+    const listing = await Marketplace.addItemListing(itemData)
     res.json({ listing: listing })
 
   } catch (error) {
@@ -79,7 +80,6 @@ const updateListing = async (req, res) => {
     res.status(400).json({ message: "Failed to update listing" });
   }
 }
-
 
 // Delete fulfilled listing
 const  deleteListing= async (req, res) => {
