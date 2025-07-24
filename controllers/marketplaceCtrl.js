@@ -14,7 +14,7 @@ const allList = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-async function viewListing(req, res){
+const viewListing = async (req, res) => {
   try {
     const listingId = req.params.id
     const item = await marketplaceModel.findById(listingId)
