@@ -99,6 +99,7 @@ module.exports = {
   getListingById,
   getFavListing,
   addItemListing,
+  getUserListings,
   updateListing,
   deleteListing
 }
