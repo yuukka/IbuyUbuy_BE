@@ -39,14 +39,14 @@ const getAllListing = async () => {
   
 };
 
-const getListingById = async (userId) => {
+const getListingById = async (listingId) => {
   
-  await Marketplace.find({ userId })
+  return await Marketplace.findOne({_id: listingId})
 
-  const getUserListings = async (userId) => {
-    findByUser(userId);
-    return getUserListings(userId);
-  }
+  // const getUserListings = async (userId) => {
+  //   findByUser(userId);
+  //   return getUserListings(userId);
+  // }
 }
 
 const getFavListing = async (ids) => {
@@ -82,22 +82,15 @@ const updateListing = async (id, userId, data) => {
     { new: true }
   );
 
-  const updateUserListing = async (id, userId, data) => {
-    await updateListing(id, userId, data);
-    return updateUserListing(id, userId, data);
-  }
 }
 
 const deleteListing = async (id, userId) => {
 
-  await Marketplace.findOneAndDelete(
+
+  return await Marketplace.findOneAndDelete(
     { _id: id, userId }
   );
   
-  const deleteUserListing = async (id, userId) => {
-    await deleteListing(id, userId);
-    return deleteUserListing(id, userId);
-  }
 }
 
 
