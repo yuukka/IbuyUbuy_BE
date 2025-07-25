@@ -39,14 +39,14 @@ const getAllListing = async () => {
   
 };
 
-const getListingById = async (userId) => {
-  
-  await Marketplace.find({ userId })
-
   const getUserListings = async (userId) => {
-    findByUser(userId);
-    return getUserListings(userId);
+    return Marketplace.find({userId: userId})
   }
+
+const getListingById = async (listingId) => {
+  
+  return await Marketplace.findOne({_id: listingId})
+
 }
 
 const getFavListing = async (ids) => {
@@ -82,22 +82,15 @@ const updateListing = async (id, userId, data) => {
     { new: true }
   );
 
-  const updateUserListing = async (id, userId, data) => {
-    await updateListing(id, userId, data);
-    return updateUserListing(id, userId, data);
-  }
 }
 
 const deleteListing = async (id, userId) => {
 
-  await Marketplace.findOneAndDelete(
+
+  return await Marketplace.findOneAndDelete(
     { _id: id, userId }
   );
   
-  const deleteUserListing = async (id, userId) => {
-    await deleteListing(id, userId);
-    return deleteUserListing(id, userId);
-  }
 }
 
 
@@ -106,6 +99,7 @@ module.exports = {
   getListingById,
   getFavListing,
   addItemListing,
+  getUserListings,
   updateListing,
   deleteListing
 }

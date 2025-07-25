@@ -15,8 +15,7 @@ const allList = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-
-async function viewListing(req, res){
+const viewListing = async (req, res) => {
   try {
     const listingId = req.params.id
     const item = await Marketplace.findById(listingId)
@@ -32,8 +31,8 @@ const yourList = async (req, res) => {
   
   try {
     const userId = req.auth.userId; 
-    const listings = await marketplaceModel.getUserListings({ user_id: userId }); // Fetch user's listings
-    res.json({ message: "GET userListing Successful", listings });
+    const listings = await marketplaceModel.getUserListings(userId); // Fetch user's listings
+    res.json({ listings: listings });
   } catch (error) {
     console.error("Error fetching user's marketplace listings:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -83,8 +82,11 @@ const updateListing = async (req, res) => {
     const userId = req.auth.userId
     const itemData = { ...req.body, userId }
 
-    const listing = await Marketplace.findById(itemData._id)
-    const listingUpdated = await Marketplace.findByIdAndUpdate(listing._id, itemData, { new: true })
+    const listing = await marketplaceModel.findById(itemData._id)
+    const listingUpdated = await marketplaceModel.findByIdAndUpdate(listing._id, itemData, { new: true })
+    console.log("listing", listing)
+    console.log("listing", listing.userId, userId)
+    
     res.json({ listing: listingUpdated })
 
   } catch (error) {
@@ -94,19 +96,20 @@ const updateListing = async (req, res) => {
 }
 
 // Delete fulfilled listing
+
 const  deleteListing= async (req, res) => {
   
   try {
     const userId = req.auth.userId
     const listingId = req.params.id
-    const listing = await Marketplace.findById(listingId)
+    const listing = await marketplaceModel.getListingById(listingId)
     
-    if (listing.user_id === userId){ 
-    const deleted = await Marketplace.findByIdAndDelete(listingId)
-    res.json({ 'deleted': deleted })
-  } else {
-    return res.status(403).json({ error: 'cannot' })
-  }
+    if (listing.userId === userId) {
+      const deleted = await marketplaceModel.deleteListing(listingId, userId)
+      res.json({ 'deleted': deleted })
+    } else {
+      return res.status(403).json({ error: 'cannot' })
+    }
 
   } catch (error) {
     console.error("Error fetching saved marketplace items:", error);
