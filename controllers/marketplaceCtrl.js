@@ -82,11 +82,13 @@ const updateListing = async (req, res) => {
     const userId = req.auth.userId
     const itemData = { ...req.body, userId }
 
-    const listing = await marketplaceModel.findById(itemData._id)
-    const listingUpdated = await marketplaceModel.findByIdAndUpdate(listing._id, itemData, { new: true })
+    const listing = await marketplaceModel.getListingById(itemData._id)
+
+    const listingUpdated = await marketplaceModel.updateListing(itemData._id, userId, itemData );
+    
     console.log("listing", listing)
     console.log("listing", listing.userId, userId)
-    
+
     res.json({ listing: listingUpdated })
 
   } catch (error) {

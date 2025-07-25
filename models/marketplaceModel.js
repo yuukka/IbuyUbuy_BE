@@ -39,9 +39,9 @@ const getAllListing = async () => {
   
 };
 
-  const getUserListings = async (userId) => {
-    return Marketplace.find({userId: userId})
-  }
+const getUserListings = async (userId) => {
+  return Marketplace.find({userId: userId})
+}
 
 const getListingById = async (listingId) => {
   
@@ -76,12 +76,11 @@ const addItemListing = async (data) => {
 
 const updateListing = async (id, userId, data) => {
   
-  await Marketplace.findOneAndUpdate(
+  return await Marketplace.findOneAndUpdate(
     { _id: id, userId },
     data,
     { new: true }
   );
-
 }
 
 const deleteListing = async (id, userId) => {
