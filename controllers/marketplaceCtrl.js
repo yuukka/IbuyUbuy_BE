@@ -18,7 +18,7 @@ const allList = async (req, res) => {
 const viewListing = async (req, res) => {
   try {
     const listingId = req.params.id
-    const item = await Marketplace.findById(listingId)
+    const item = await marketplaceModel.getListingById(listingId)
     res.json({ item });
   } catch (error) {
     console.error("Error fetching marketplace item:", error);
@@ -56,7 +56,7 @@ const createListing = async (req, res) => {
   console.log(req.body);
   try {
     const userId = req.auth().userId;
-    const { title, description, price, category } = req.body;
+    // const { title, description, price, category } = req.body;
     const currentUser = await User.findOne({ user_id: userId })
     const itemData = { ...req.body, userId }
 
@@ -82,11 +82,13 @@ const updateListing = async (req, res) => {
     const userId = req.auth.userId
     const itemData = { ...req.body, userId }
 
-    const listing = await marketplaceModel.findById(itemData._id)
-    const listingUpdated = await marketplaceModel.findByIdAndUpdate(listing._id, itemData, { new: true })
+    const listing = await marketplaceModel.getListingById(itemData._id)
+
+    const listingUpdated = await marketplaceModel.updateListing(itemData._id, userId, itemData );
+    
     console.log("listing", listing)
     console.log("listing", listing.userId, userId)
-    
+
     res.json({ listing: listingUpdated })
 
   } catch (error) {
